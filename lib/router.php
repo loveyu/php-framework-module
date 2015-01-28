@@ -57,11 +57,11 @@ class Router{
 
 	/**
 	 * 执行路由替换工作，并返回对应的路由
-	 * @param array $uri_list 传入的信息表
+	 * @param array|string $uri_list 传入的信息表
 	 * @return array 返回的信息
 	 */
 	public function result($uri_list){
-		$str = implode(ROUTER_SPLIT_CHAR, $uri_list);
+		$str = is_array($uri_list) ? implode(ROUTER_SPLIT_CHAR, $uri_list) : $uri_list;
 		if(isset($this->_redirect[$str])){
 			return $this->to_list($this->_redirect[$str]);
 		}

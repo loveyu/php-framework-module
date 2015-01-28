@@ -369,7 +369,7 @@ class UriInfo{
 	 * 对路由信息进行二次处理
 	 */
 	public function process(){
-		$this->url_list = hook()->apply('UriInfo_process', $this->url_list);
+		$this->url_list = hook()->apply('UriInfo_process', $this->path);
 	}
 }
 
