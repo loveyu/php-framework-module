@@ -250,7 +250,7 @@ class UriInfo{
 		if($this->path[0] != '/'){
 			$this->path = "/" . $this->path;
 		}
-		if(substr($this->path, -1) == '/'){
+		if(substr($this->path, -1) == '/' && defined('URI_IGNORE_END_CHAR') && URI_IGNORE_END_CHAR){
 			$this->url_list = explode(ROUTER_SPLIT_CHAR, substr($this->path, 1, -1));
 		} else{
 			$this->url_list = explode(ROUTER_SPLIT_CHAR, substr($this->path, 1));
@@ -369,7 +369,7 @@ class UriInfo{
 	 * 对路由信息进行二次处理
 	 */
 	public function process(){
-		$this->url_list = hook()->apply('UriInfo_process', $this->path);
+		$this->url_list = hook()->apply('UriInfo_process', $this->url_list);
 	}
 }
 
