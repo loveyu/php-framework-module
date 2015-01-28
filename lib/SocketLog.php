@@ -147,7 +147,8 @@ class SocketLog{
 	}
 
 	/**
-	 * @param $data
+	 * 向socket写入字符串
+	 * @param string $data
 	 */
 	public function write($data){
 		$data = date("[Y-m-d H:i:s] ", NOW_TIME) . $data;
