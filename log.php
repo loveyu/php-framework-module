@@ -144,6 +144,7 @@ class Log{
 			Log::write("[$type]:$message;$file:$line", Log::ERR);
 		}
 		if(_Debug_){
+			header("Content-Type: text/html; charset=utf-8");
 			echo "<br />\n<b>{$type}</b>:  {$message} in <b>{$file}</b> on line <b>{$line}</b><br />\n";
 		}
 	}
