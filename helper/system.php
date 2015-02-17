@@ -58,9 +58,10 @@ function get_file_url($param = ''){
  * @param string|array $uri
  * @param string       $method
  * @param int          $http_response_code
+ * @param bool         $exit 是否退出，默认结束程序执行
  */
-function redirect($uri = '', $method = 'refresh', $http_response_code = 302){
-	if(is_array($uri) || !preg_match('#^https?://#i', $uri)){
+function redirect($uri = '', $method = 'refresh', $http_response_code = 302, $exit = true){
+	if(is_array($uri) || !filter_var($uri, FILTER_VALIDATE_URL)){
 		$uri = get_url($uri);
 	}
 	switch($method){
@@ -71,7 +72,9 @@ function redirect($uri = '', $method = 'refresh', $http_response_code = 302){
 			header("Location: " . $uri, true, $http_response_code);
 			break;
 	}
-	exit;
+	if($exit){
+		exit;
+	}
 }
 
 /**
