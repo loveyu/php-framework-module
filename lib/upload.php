@@ -182,7 +182,7 @@ class Upload{
 			}
 
 			/* 检测并创建子目录 */
-			$sub_path = $this->get_sub_path($file['name']);
+			$sub_path = $this->get_sub_path($file);
 			if(false === $sub_path){
 				continue;
 			} else{
@@ -197,8 +197,7 @@ class Upload{
 				'bmp',
 				'png',
 				'swf'
-			))
-			){
+			))){
 				$imginfo = getimagesize($file['tmp_name']);
 				if(empty($imginfo) || ($ext == 'gif' && empty($imginfo['bits']))){
 					$this->error = _('Illegal image file!');
@@ -240,7 +239,7 @@ class Upload{
 			$filename = substr(pathinfo("_{$file['name']}", PATHINFO_FILENAME), 1);
 			$savename = $filename;
 		} else{
-			$savename = $this->getName($rule, $file['name']);
+			$savename = $this->getName($rule, $file['name'], $file);
 			if(empty($savename)){
 				$this->error = _('File naming mistake!');
 				return false;
@@ -253,14 +252,14 @@ class Upload{
 
 	/**
 	 * 获取子路径
-	 * @param string $filename
+	 * @param array $file_info
 	 * @return bool|string
 	 */
-	private function get_sub_path($filename){
+	private function get_sub_path($file_info){
 		$sub_path = '';
 		$rule = $this->sub_path;
 		if($this->sub_status && !empty($rule)){
-			$sub_path = $this->getName($rule, $filename) . '/';
+			$sub_path = $this->getName($rule, $file_info['name'], $file_info) . '/';
 
 			if(!empty($sub_path) && !$this->uploader->mkdir($this->save_path . $sub_path)){
 				$this->error = $this->uploader->getError();
@@ -272,16 +271,21 @@ class Upload{
 
 	/**
 	 * 根据指定规则获取文件名
-	 * @param $rule
-	 * @param $filename
+	 * @param        $rule
+	 * @param string $filename
+	 * @param array  $file_info
 	 * @return string
 	 */
-	private function getName($rule, $filename){
+	private function getName($rule, $filename, $file_info = NULL){
 		$name = '';
 		if(is_array($rule)){ //数组规则
 			$func = $rule[0];
 			$param = (array)$rule[1];
 			foreach($param as &$value){
+				if($value == "__FILE_INFO__"){
+					$value = $file_info;
+					continue;
+				}
 				/**
 				 * __FILE__ 用作参数替换
 				 */
@@ -328,7 +332,7 @@ class Upload{
 		}
 
 		/* 检查文件Mime类型 */
-		//TODO:FLASH上传的文件获取到的mime类型都为application/octet-stream
+		//FLASH上传的文件获取到的mime类型都为application/octet-stream
 		if(!$this->checkMime($file['type'])){
 			$this->error = _('Upload file MIME type does not allow!');
 			return false;
