@@ -28,6 +28,7 @@ class Hook{
 	 * 添加一个钩子到系统
 	 * @param string   $name
 	 * @param callback $func
+	 * @return string 返回在钩子列表中的索引
 	 * @throws \Exception
 	 */
 	public function add($name, $func){
@@ -39,12 +40,14 @@ class Hook{
 			$this->_hook_list[$name] = array();
 		}
 		if(is_array($func)){
-			$this->_hook_list[$name][get_class($func[0]) . ":" . $func[1]] = $func;
+			$index = get_class($func[0]) . ":" . $func[1];
 		} else if(is_string($func)){
-			$this->_hook_list[$name][$func] = $func;
+			$index = $func;
 		} else{
-			$this->_hook_list[$name]["_v_" . count($this->_hook_list[$name])] = $func;
+			$index = "_v_" . count($this->_hook_list[$name]);
 		}
+		$this->_hook_list[$name][$index] = $func;
+		return $index;
 	}
 
 	/**
@@ -78,7 +81,7 @@ class Hook{
 	/**
 	 * 移除对应的钩子
 	 * @param string          $name 钩子名称
-	 * @param callback|string $func 钩子对应的调用方法
+	 * @param callback|string $func 钩子对应的调用方法或则通过Add返回的索引
 	 */
 	public function remove($name, $func = ''){
 		if(isset($this->_hook_list[$name])){
