@@ -25,15 +25,16 @@ class Session implements SessionInterface
 
 	/**
 	 * @param string $drive_name
+	 * @param array $drive_cfg 驱动配置
 	 * @throws \Exception
 	 */
-	function __construct($drive_name = 'Local') {
+	function __construct($drive_name = 'Local',$drive_cfg=[]) {
 		c_lib()->load('session/' . $drive_name);
 		$drive_name = "CLib\\Session\\" . $drive_name;
 		if(!class_exists($drive_name)){
 			throw new \Exception(_("Session Drive Not Found"));
 		}
-		$this->drive = new $drive_name();
+		$this->drive = new $drive_name($drive_cfg);
 	}
 
 	public function get($name) {

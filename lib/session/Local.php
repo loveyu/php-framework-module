@@ -22,9 +22,22 @@ class Local implements SessionInterface
 
 	/**
 	 * 启动Session
+	 * @param array $cfg
 	 */
-	function __construct() {
-		session_start();
+	public function __construct($cfg=[]) {
+		$config = [
+			'lifetime' => 0,
+			'path' => NULL,
+			'domain' => NULL,
+			'secure' => false,
+			'httponly' => true
+		];
+		$config = array_merge($config, $cfg);
+		session_set_cookie_params($config['lifetime'], $config['path'], $config['domain'], $config['secure'], $config['httponly']);
+		if(session_status() != PHP_SESSION_ACTIVE){
+			//Session未启用
+			session_start();
+		}
 	}
 
 	/**
