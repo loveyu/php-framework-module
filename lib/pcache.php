@@ -4,8 +4,8 @@ namespace CLib;
 c_lib()->load('interface/PCacheInterface');
 
 /**
- * 缓存类
- * Class Cache
+ * 页面缓存类
+ * Class PCache
  * @package CLib
  */
 class PCache{

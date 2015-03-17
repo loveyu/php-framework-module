@@ -34,7 +34,7 @@ class Local implements SessionInterface
 		];
 		$config = array_merge($config, $cfg);
 		session_set_cookie_params($config['lifetime'], $config['path'], $config['domain'], $config['secure'], $config['httponly']);
-		if(session_status() != PHP_SESSION_ACTIVE){
+		if(session_status() == PHP_SESSION_DISABLED){
 			//Session未启用
 			session_start();
 		}
