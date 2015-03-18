@@ -19,6 +19,8 @@ use CLib\SessionInterface;
  */
 class Local implements SessionInterface{
 
+	private $flag = false;
+
 	/**
 	 * 启动Session
 	 * @param array $cfg
@@ -33,9 +35,12 @@ class Local implements SessionInterface{
 		];
 		$config = array_merge($config, $cfg);
 		session_set_cookie_params($config['lifetime'], $config['path'], $config['domain'], $config['secure'], $config['httponly']);
-		if(session_status() == PHP_SESSION_DISABLED){
+		if(session_status() === PHP_SESSION_DISABLED || session_id() === ""){
 			//Session未启用
-			session_start();
+			if(!$this->flag){
+				session_start();
+				$this->flag = true;
+			}
 		}
 	}
 
@@ -83,8 +88,11 @@ class Local implements SessionInterface{
 	 * @return void
 	 */
 	public function destroy(){
-		if(session_status() == PHP_SESSION_ACTIVE){
-			session_destroy();
+		if(session_status() === PHP_SESSION_ACTIVE){
+			if($this->flag){
+				session_unset();
+				$this->flag = true;
+			}
 		}
 	}
 
