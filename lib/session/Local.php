@@ -17,14 +17,13 @@ use CLib\SessionInterface;
  * Class Local
  * @package CLib\Session
  */
-class Local implements SessionInterface
-{
+class Local implements SessionInterface{
 
 	/**
 	 * 启动Session
 	 * @param array $cfg
 	 */
-	public function __construct($cfg=[]) {
+	public function __construct($cfg = []){
 		$config = [
 			'lifetime' => 0,
 			'path' => NULL,
@@ -45,24 +44,24 @@ class Local implements SessionInterface
 	 * @param $name string 数组键名
 	 * @return mixed
 	 */
-	public function get($name) {
-		if(isset($_SESSION[$name])) {
+	public function get($name){
+		if(isset($_SESSION[$name])){
 			return $_SESSION[$name];
-		} else {
-			if($name === null) {
+		} else{
+			if($name === NULL){
 				return $_SESSION;
 			}
-			return null;
+			return NULL;
 		}
 	}
 
 	/**
 	 * 设置操作
-	 * @param $name string 数组键名
+	 * @param $name  string 数组键名
 	 * @param $value string 对应的值
 	 * @return bool
 	 */
-	public function set($name, $value) {
+	public function set($name, $value){
 		$_SESSION[$name] = $value;
 		return true;
 	}
@@ -72,8 +71,8 @@ class Local implements SessionInterface
 	 * @param $name string 数组键名
 	 * @return bool
 	 */
-	public function delete($name) {
-		if(isset($_SESSION[$name])) {
+	public function delete($name){
+		if(isset($_SESSION[$name])){
 			unset($_SESSION[$name]);
 		}
 		return isset($_SESSION[$name]);
@@ -83,8 +82,10 @@ class Local implements SessionInterface
 	 * 彻底删除SESSION
 	 * @return void
 	 */
-	public function destroy() {
-		session_destroy();
+	public function destroy(){
+		if(session_status() == PHP_SESSION_ACTIVE){
+			session_destroy();
+		}
 	}
 
 }
