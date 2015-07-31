@@ -59,13 +59,22 @@ class Config{
 		return $rs;
 	}
 
+	/**
+	 * 合并指定配置文件
+	 * @param array|string $key
+	 * @param mixed        $value
+	 */
+	public function merge($key, $value){
+		$this->set($key, $value, true);
+	}
 
 	/**
 	 * 修改指定配置文件
 	 * @param array|string $key
 	 * @param mixed        $value
+	 * @param bool         $merge 是否合并对象，非替换
 	 */
-	public function set($key, $value){
+	public function set($key, $value, $merge = false){
 		$p = &$this->_config;
 		if(!is_array($key)){
 			$key = [$key];
@@ -75,7 +84,11 @@ class Config{
 			$count--;
 			if(isset($p[$v])){
 				if(!$count){
-					$p[$v] = $value;
+					if($merge && is_array($value) && is_array($p[$v])){
+						$p[$v] =array_merge($p[$v], $value);
+					} else{
+						$p[$v] = $value;
+					}
 					return;
 				}
 			} else{
@@ -90,5 +103,3 @@ class Config{
 		}
 	}
 }
-
-?>
