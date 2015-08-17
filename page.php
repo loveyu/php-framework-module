@@ -27,6 +27,11 @@ class Page{
 	 */
 	protected $__req;
 
+	/**
+	 * @var bool 控制器是否应该继续执行
+	 */
+	private $__run_status = true;
+
 	/* 默认构造器 */
 	function __construct(){
 		$this->__core = Core::getInstance();
@@ -101,6 +106,21 @@ class Page{
 		}
 		unset($param);
 		include(_ViewPath_ . "/$file");
+	}
+
+	/**
+	 * 结束控制器的执行，不再执行方法
+	 */
+	protected function __exit(){
+		$this->__run_status = false;
+	}
+
+	/**
+	 * 判断程序是否已经结束运行，不再执行控制器函数
+	 * @return bool
+	 */
+	public function __is_exit(){
+		return $this->__run_status === false;
 	}
 
 	/**

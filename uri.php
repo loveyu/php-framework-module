@@ -24,6 +24,11 @@ class Uri{
 	private $_list_404;
 
 	/**
+	 * @var bool 页面结束标记
+	 */
+	private $_page_exit = false;
+
+	/**
 	 * 构造函数
 	 */
 	public function __construct(){
@@ -99,8 +104,12 @@ class Uri{
 		$path = _PagePath_;
 		try{
 			foreach($list as $id => $v){
-				if(is_file($path . "/" . $v . '.php')){
-					require_once($path . "/" . $v . '.php');
+				if($this->_page_exit){
+					return true;//页面由程序自己结束
+				}
+				$_tmp_path = realpath("{$path}/{$v}.php");
+				if(is_file($_tmp_path)){
+					require_once($_tmp_path);
 					/**
 					 * @var $class_name Page
 					 */
@@ -109,42 +118,14 @@ class Uri{
 						$methods = array_diff(get_class_methods($class_name), $class_name::__un_register());
 						if(isset($list[$id + 1])){
 							if(substr($list[$id + 1], 0, 2) != "__" && in_array($list[$id + 1], $methods)){
-								if($class_name::__class_name() !== $class_name){
+								if(!$this->run_method($class_name, $list[$id + 1], array_slice($list, 2))){
 									break;
 								}
-								hook()->apply('Uri_load_begin', NULL);
-								$page = new $class_name;
-								if(get_class($page) !== $class_name){
-									break;
-								}
-								if(_Debug_){
-									call_user_func_array(array(
-										$page,
-										$list[$id + 1]
-									), array_slice($list, 2));
-								} else{
-									@call_user_func_array(array(
-										$page,
-										$list[$id + 1]
-									), array_slice($list, 2));
-								}
-
-								hook()->apply('Uri_load_end', NULL);
 								return true;
 							}
 						} else{
 							if(in_array('main', $methods)){
-								if($class_name::__class_name() !== $class_name){
-									break;
-								}
-								hook()->apply('Uri_load_begin', NULL);
-								$page = new $class_name;
-								if(_Debug_){
-									$page->main();
-								} else{
-									@$page->main();
-								}
-								hook()->apply('Uri_load_end', NULL);
+								$this->run_method($class_name, 'main', []);
 								return true;
 							}
 						}
@@ -166,6 +147,51 @@ class Uri{
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 执行方法
+	 * @param $class_name Page 类名
+	 * @param $method     string
+	 * @param $param      []
+	 * @return bool
+	 */
+	private function run_method($class_name, $method, $param){
+		/**
+		 * @var $class_name Page
+		 */
+		if($class_name::__class_name() !== $class_name){
+			return false;
+		}
+		hook()->apply('Uri_load_begin', NULL);
+		$page = new $class_name;
+		/**
+		 * @var $page Page
+		 */
+		if(get_class($page) !== $class_name){
+			hook()->apply('Uri_load_end', NULL);
+			return false;
+		}
+		if($page->__is_exit()){
+			//程序已结束，不再继续调用方法
+			$this->_page_exit = true;
+			hook()->apply('Uri_load_end', NULL);
+			return false;
+		}
+		if(_Debug_){
+			call_user_func_array(array(
+				$page,
+				$method
+			), $param);
+		} else{
+			@call_user_func_array(array(
+				$page,
+				$method
+			), $param);
+		}
+
+		hook()->apply('Uri_load_end', NULL);
+		return true;
 	}
 
 	/**
