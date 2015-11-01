@@ -576,3 +576,14 @@ function mime_get(){
 	}
 	return $rt;
 }
+
+if(!function_exists('_')){
+	/**
+	 * 在未定义gettext的情况下直接返回原数据
+	 * @param string $str
+	 * @return string
+	 */
+	function _($str){
+		return $str;
+	}
+}
