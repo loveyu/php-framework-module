@@ -61,7 +61,7 @@ class Router{
 	 * @return array 返回的信息
 	 */
 	public function result($uri_list){
-		$str = implode(ROUTER_SPLIT_CHAR, $uri_list);
+		$str = urldecode(implode(ROUTER_SPLIT_CHAR, $uri_list));
 		if(isset($this->_redirect[$str])){
 			return $this->to_list($this->_redirect[$str]);
 		}
