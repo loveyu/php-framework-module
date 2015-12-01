@@ -290,7 +290,7 @@ class UriInfo{
 		$this->protocol_name = $this->is_ssl() ? 'https' : 'http';
 		$this->http_port = $_SERVER['SERVER_PORT'];
 		$i = strrpos($_SERVER["HTTP_HOST"], ':');
-		if($i === false || $i + 1 < strlen($_SERVER["HTTP_HOST"])){
+		if($i === false || $i + 1 > strlen($_SERVER["HTTP_HOST"])){
 			$this->http_host = $_SERVER["HTTP_HOST"];
 		} else{
 			if(substr($_SERVER["HTTP_HOST"], $i + 1) == $this->http_port){
