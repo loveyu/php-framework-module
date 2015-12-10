@@ -54,8 +54,7 @@ class medoo implements CLib\SqlInterface{
 				}
 			}
 			$type = strtolower($this->database_type);
-			if(isset($this->port) && is_int($this->port * 1)
-			){
+			if(isset($this->port) && is_int($this->port * 1)){
 				$port = $this->port;
 			}
 			$set_charset = "SET NAMES '" . $this->charset . "'";
@@ -100,16 +99,31 @@ class medoo implements CLib\SqlInterface{
 		return $this->count_number;
 	}
 
+	private function record_sql($sql, $start_time, $end_time){
+		if(_Debug_ && isset($_GET['_debug']) && $_GET['_debug'] === "1"){
+			$sql = "[" . round($end_time - $start_time, 5) . "]:{$sql}";
+			\Core\Log::write($sql, \Core\Log::DEBUG);
+		}
+	}
+
 	public function query($query){
 		$this->queryString = $query;
 		$this->count_number++;
-		return $this->pdo->query($query);
+		$start = microtime(true);
+		$rt = $this->pdo->query($query);
+		$end = microtime(true);
+		$this->record_sql($query, $start, $end);
+		return $rt;
 	}
 
 	public function exec($query){
 		$this->queryString = $query;
 		$this->count_number++;
-		return $this->pdo->exec($query);
+		$start = microtime(true);
+		$rt = $this->pdo->exec($query);
+		$end = microtime(true);
+		$this->record_sql($query, $start, $end);
+		return $rt;
 	}
 
 	/**
@@ -155,8 +169,7 @@ class medoo implements CLib\SqlInterface{
 		$wheres = array();
 
 		foreach($data as $key => $value){
-			if(($key == 'AND' || $key == 'OR') && is_array($value)
-			){
+			if(($key == 'AND' || $key == 'OR') && is_array($value)){
 				$wheres[] = 0 !== count(array_diff_key($value, array_keys(array_keys($value)))) ? '(' . $this->data_implode($value, ' ' . $key) . ')' : '(' . $this->inner_conjunct($value, ' ' . $key, $conjunctor) . ')';
 			} else if($key === 'LIKE' && is_array($value)){
 				$wheres[] = substr($this->where_clause(['LIKE' => $value]), 7);
@@ -300,8 +313,7 @@ class medoo implements CLib\SqlInterface{
 				if(is_numeric($where['LIMIT'])){
 					$where_clause .= ' LIMIT ' . $where['LIMIT'];
 				}
-				if(is_array($where['LIMIT']) && is_numeric($where['LIMIT'][0]) && is_numeric($where['LIMIT'][1])
-				){
+				if(is_array($where['LIMIT']) && is_numeric($where['LIMIT'][0]) && is_numeric($where['LIMIT'][1])){
 					$where_clause .= ' LIMIT ' . $where['LIMIT'][0] . ',' . $where['LIMIT'][1];
 				}
 			}
