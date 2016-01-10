@@ -10,7 +10,9 @@ namespace CLib\Session;
 
 c_lib()->load('session');
 
+use CLib\Cookie;
 use CLib\SessionInterface;
+use Core\Log;
 
 /**
  * 使用自带的本地存储Session
@@ -26,10 +28,11 @@ class Local implements SessionInterface{
 	 * @param array $cfg
 	 */
 	public function __construct($cfg = []){
+		$cookie = new Cookie();
 		$config = [
-			'lifetime' => 0,
-			'path' => NULL,
-			'domain' => NULL,
+			'lifetime' => defined('SESSION_LIFE_TIME') ? SESSION_LIFE_TIME : 0,
+			'path' => $cookie->path(''),
+			'domain' => $cookie->domain(''),
 			'secure' => false,
 			'httponly' => true
 		];

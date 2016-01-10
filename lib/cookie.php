@@ -112,7 +112,7 @@ class Cookie{
 	 * @param $path
 	 * @return mixed
 	 */
-	private function path($path){
+	public function path($path){
 		if('' == $path){
 			$path = URL_PATH;
 		}
@@ -124,7 +124,7 @@ class Cookie{
 	 * @param $domain
 	 * @return string
 	 */
-	private function domain($domain){
+	public function domain($domain){
 		if('' == $domain){
 			$domain = u()->getUriInfo()->getHttpHost();
 		}
