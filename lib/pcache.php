@@ -39,7 +39,7 @@ class PCache{
 			c_lib()->load('pcache/' . $drive_name);
 			$drive_name = "CLib\\PCache\\" . $drive_name;
 			if(!class_exists($drive_name)){
-				throw new \Exception(_("Page Cache Drive Not Found"));
+				throw new \Exception(___("Page Cache Drive Not Found"));
 			}
 			$this->drive = new $drive_name($drive_config);
 			hook()->add("Uri_load_begin", [

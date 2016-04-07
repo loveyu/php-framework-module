@@ -41,7 +41,7 @@ class Local implements UploadInterface{
 	 */
 	public function checkRootPath($path){
 		if(!(is_dir($this->rootPath) && is_writable($this->rootPath))){
-			$this->error = _('Upload the root directory does not exist! Please try to manually create:') . $this->rootPath;
+			$this->error = ___('Upload the root directory does not exist! Please try to manually create:') . $this->rootPath;
 			return false;
 		}
 		return true;
@@ -64,7 +64,7 @@ class Local implements UploadInterface{
 		} else{
 			/* 检测目录是否可写 */
 			if(!is_writable($this->rootPath . $save_path)){
-				$this->error = _('Upload directory') . $save_path . _(' can not writable!');
+				$this->error = ___('Upload directory') . $save_path . ___(' can not writable!');
 				return false;
 			} else{
 				return true;
@@ -86,13 +86,13 @@ class Local implements UploadInterface{
 
 		/* 不覆盖同名文件 */
 		if(!$replace && is_file($filename)){
-			$this->error = _('File exists ') . $file['save_name'];
+			$this->error = ___('File exists ') . $file['save_name'];
 			return false;
 		}
 
 		/* 移动文件 */
 		if(!move_uploaded_file($file['tmp_name'], $filename)){
-			$this->error = _('Save the file upload error!');
+			$this->error = ___('Save the file upload error!');
 			return false;
 		}
 
@@ -113,7 +113,7 @@ class Local implements UploadInterface{
 		if(mkdir($dir, 0777, true)){
 			return true;
 		} else{
-			$this->error = _("Directory ") . $save_path . _(" Creation Failed!");
+			$this->error = ___("Directory ") . $save_path . ___(" Creation Failed!");
 			return false;
 		}
 	}

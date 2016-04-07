@@ -32,7 +32,7 @@ class Session implements SessionInterface
 		c_lib()->load('session/' . $drive_name);
 		$drive_name = "CLib\\Session\\" . $drive_name;
 		if(!class_exists($drive_name)){
-			throw new \Exception(_("Session Drive Not Found"));
+			throw new \Exception(___("Session Drive Not Found"));
 		}
 		$this->drive = new $drive_name($drive_cfg);
 	}

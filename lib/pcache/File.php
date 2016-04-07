@@ -23,7 +23,7 @@ class File implements PCacheInterface{
 	 */
 	private function mk_cache_dir(){
 		if(!is_writable(_Cache_ . "/out/")){
-			throw new \Exception(_("Page cache path can't write!"));
+			throw new \Exception(___("Page cache path can't write!"));
 		}
 		for($i = 0; $i < 0xff; $i++){
 			$x = dechex($i);

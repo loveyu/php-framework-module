@@ -64,7 +64,7 @@ class Image{
 				$class = 'Imagick';
 				break;
 			default:
-				throw new \Exception(_("Unknown type Exception"));
+				throw new \Exception(___("Unknown type Exception"));
 		}
 
 
@@ -72,7 +72,7 @@ class Image{
 		c_lib()->load('image/' . $class);
 		$class = "CLib\\Image\\{$class}";
 		if(!class_exists($class)){
-			throw new \Exception(_("Image interface class error."));
+			throw new \Exception(___("Image interface class error."));
 		}
 		$this->img = new $class($imgname);
 	}

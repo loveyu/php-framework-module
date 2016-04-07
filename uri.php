@@ -141,7 +141,7 @@ class Uri{
 				$this->load_404();
 			}
 		} catch(\Exception $ex){
-			Log::write(_("URI core class find a exception.") . print_r($ex, true), Log::ERR);
+			Log::write(___("URI core class find a exception.") . print_r($ex, true), Log::ERR);
 			if(_Debug_){
 				throw $ex;
 			}

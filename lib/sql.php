@@ -7,7 +7,7 @@ if(!defined('_CorePath_')){
 	exit;
 }
 
-c_lib()->load('interface/SqlInterface','medoo');
+c_lib()->load('interface/SqlInterface', 'medoo');
 
 /**
  * Class Sql
@@ -65,8 +65,7 @@ class Sql implements SqlInterface{
 			return;
 		}
 		hook()->add("Log_write", [
-			$this,
-			'log_hook'
+			$this, 'log_hook'
 		]);
 		$this->_setting = $setting;
 		$this->_setting_read = $read;
@@ -219,6 +218,20 @@ class Sql implements SqlInterface{
 	}
 
 	/**
+	 * 通过查询SQL得到数组
+	 * @param string $query 待绑定的SQL
+	 * @param array  $param 绑定的参数
+	 * @return array
+	 */
+	public function query_by_param($query, $param){
+		if(empty($this->_reader)){
+			return $this->_writer->query_by_param($query, $param);
+		} else{
+			return $this->_reader->query_by_param($query, $param);
+		}
+	}
+
+	/**
 	 * @param      $table
 	 * @param      $join
 	 * @param null $columns
@@ -240,8 +253,7 @@ class Sql implements SqlInterface{
 	 */
 	public function insert($table, $data){
 		return call_user_func_array([
-			$this->_writer,
-			'insert'
+			$this->_writer, 'insert'
 		], func_get_args());
 		//		return $this->_writer->insert($table, $data);
 	}
@@ -378,8 +390,7 @@ class Sql implements SqlInterface{
 	 */
 	public function error(){
 		$rt = array(
-			'write' => $this->_writer->error(),
-			'read' => NULL
+			'write' => $this->_writer->error(), 'read' => NULL
 		);
 		if(empty($this->_reader)){
 			$rt['read'] = $rt['write'];
@@ -394,8 +405,7 @@ class Sql implements SqlInterface{
 	 */
 	public function last_query(){
 		$rt = array(
-			'write' => $this->_writer->last_query(),
-			'read' => NULL
+			'write' => $this->_writer->last_query(), 'read' => NULL
 		);
 		if(empty($this->_reader)){
 			$rt['read'] = $rt['write'];
@@ -410,8 +420,7 @@ class Sql implements SqlInterface{
 	 */
 	public function info(){
 		$rt = array(
-			'write' => $this->_writer->info(),
-			'read' => NULL
+			'write' => $this->_writer->info(), 'read' => NULL
 		);
 		if(empty($this->_reader)){
 			$rt['read'] = $rt['write'];

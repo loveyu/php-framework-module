@@ -21,7 +21,7 @@ class Safe{
 		c_lib()->load('safe/' . $drive);
 		$drive_name = "CLib\\Safe\\" . $drive;
 		if(!class_exists($drive_name)){
-			throw new \Exception(_("Safe Drive Not Found"));
+			throw new \Exception(___("Safe Drive Not Found"));
 		}
 		$this->drive = new $drive_name();
 	}

@@ -80,7 +80,7 @@ class Page{
 				if(is_file(_ViewPath_ . "/$v")){
 					$this->__view_f($v, $param);
 				} else{
-					trigger_error(_("Can't load view file:") . $file, E_USER_WARNING);
+					trigger_error(___("Can't load view file:") . $file, E_USER_WARNING);
 					//Log::write(_("Can't load view file:") . $file, Log::NOTICE);
 				}
 			}
@@ -88,7 +88,7 @@ class Page{
 			if(is_file(_ViewPath_ . "/$file")){
 				$this->__view_f($file, $param);
 			} else{
-				trigger_error(_("Can't load view file:") . $file, E_USER_WARNING);
+				trigger_error(___("Can't load view file:") . $file, E_USER_WARNING);
 				//Log::write(_("Can't load view file:") . $file, Log::NOTICE);
 			}
 		}

@@ -33,8 +33,8 @@ class Hook{
 	 */
 	public function add($name, $func){
 		if(!is_callable($func)){
-			Log::write(_("Error Callback function") . "Name:" . $name . ",Func:" . gettype($func), Log::ALERT);
-			throw new \Exception(_("Error Callback function"));
+			Log::write(___("Error Callback function") . "Name:" . $name . ",Func:" . gettype($func), Log::ALERT);
+			throw new \Exception(___("Error Callback function"));
 		}
 		if(!isset($this->_hook_list[$name])){
 			$this->_hook_list[$name] = array();

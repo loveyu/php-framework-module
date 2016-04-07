@@ -38,7 +38,7 @@ class Config{
 			}
 			return $config;
 		} else{
-			trigger_error(_("Config file can not found.") . $file_path, E_USER_ERROR);
+			trigger_error(___("Config file can not found.") . $file_path, E_USER_ERROR);
 		}
 		return NULL;
 	}

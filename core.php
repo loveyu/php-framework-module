@@ -87,7 +87,7 @@ class Core{
 	 * 禁止克隆对象
 	 */
 	private function __clone(){
-		$this->error(_("Clone is forbidden."));
+		$this->error(___("Clone is forbidden."));
 	}
 
 	/**

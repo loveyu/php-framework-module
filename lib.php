@@ -52,9 +52,9 @@ class Lib{
 					require($this->lib_path . "/" . $name . '.php');
 					$this->file_list[] = $name;
 				} else{
-					Log::write(_("Can't reload lib:") . $this->lib_path . "/" . $name . '.php', Log::ERR);
+					Log::write(___("Can't reload lib:") . $this->lib_path . "/" . $name . '.php', Log::ERR);
 					if(_Debug_){
-						throw new \Exception(_("Can't reload lib:") . $name);
+						throw new \Exception(___("Can't reload lib:") . $name);
 					}
 				}
 			}

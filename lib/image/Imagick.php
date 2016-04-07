@@ -46,7 +46,7 @@ class Imagick implements ImageInterface{
 	public function open($imgname){
 		//检测图像文件
 		if(!is_file($imgname)){
-			throw new \Exception(_('The image file does not exist'));
+			throw new \Exception(___('The image file does not exist'));
 		}
 
 		//销毁已存在的图像
@@ -73,7 +73,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function save($imgname, $type = NULL, $interlace = true){
 		if(empty($this->img)){
-			throw new \Exception(_('No image resources can be saved'));
+			throw new \Exception(___('No image resources can be saved'));
 		}
 
 		//设置图片类型
@@ -108,7 +108,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function width(){
 		if(empty($this->img)){
-			throw new \Exception(_('Not specified image resource'));
+			throw new \Exception(___('Not specified image resource'));
 		}
 		return $this->info['width'];
 	}
@@ -120,7 +120,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function height(){
 		if(empty($this->img)){
-			throw new \Exception(_('Not specified image resource'));
+			throw new \Exception(___('Not specified image resource'));
 		}
 		return $this->info['height'];
 	}
@@ -132,7 +132,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function type(){
 		if(empty($this->img)){
-			throw new \Exception(_('Not specified image resource'));
+			throw new \Exception(___('Not specified image resource'));
 		}
 		return $this->info['type'];
 	}
@@ -144,7 +144,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function mime(){
 		if(empty($this->img)){
-			throw new \Exception(_('Not specified image resource'));
+			throw new \Exception(___('Not specified image resource'));
 		}
 		return $this->info['mime'];
 	}
@@ -156,7 +156,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function size(){
 		if(empty($this->img)){
-			throw new \Exception(_('Not specified image resource'));
+			throw new \Exception(___('Not specified image resource'));
 		}
 		return array(
 			$this->info['width'],
@@ -176,7 +176,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function crop($w, $h, $x = 0, $y = 0, $width = NULL, $height = NULL){
 		if(empty($this->img)){
-			throw new \Exception(_('No image can be cropped resources'));
+			throw new \Exception(___('No image can be cropped resources'));
 		}
 
 		//设置保存尺寸
@@ -231,7 +231,7 @@ class Imagick implements ImageInterface{
 	 */
 	public function thumb($width, $height, $type = Image::IMAGE_THUMB_SCALE){
 		if(empty($this->img)){
-			throw new \Exception(_('No image can be abbreviated Resources'));
+			throw new \Exception(___('No image can be abbreviated Resources'));
 		}
 
 		//原图宽度和高度
@@ -354,7 +354,7 @@ class Imagick implements ImageInterface{
 				break;
 
 			default:
-				throw new \Exception(_('Does not support the type of crop thumbnails'));
+				throw new \Exception(___('Does not support the type of crop thumbnails'));
 		}
 
 		/* 裁剪图像 */
@@ -397,10 +397,10 @@ class Imagick implements ImageInterface{
 	public function water($source, $locate = Image::IMAGE_WATER_SOUTHEAST, $alpha = 80){
 		//资源检测
 		if(empty($this->img)){
-			throw new \Exception(_('No watermark can be added to image resources'));
+			throw new \Exception(___('No watermark can be added to image resources'));
 		}
 		if(!is_file($source)){
-			throw new \Exception(_('Watermark image absence'));
+			throw new \Exception(___('Watermark image absence'));
 		}
 
 		//创建水印图像资源
@@ -470,7 +470,7 @@ class Imagick implements ImageInterface{
 				if(is_array($locate)){
 					list($x, $y) = $locate;
 				} else{
-					throw new \Exception(_('Does not support the type of watermark location'));
+					throw new \Exception(___('Does not support the type of watermark location'));
 				}
 		}
 
@@ -515,10 +515,10 @@ class Imagick implements ImageInterface{
 	public function text($text, $font, $size, $color = '#00000000', $locate = Image::IMAGE_WATER_SOUTHEAST, $offset = 0, $angle = 0){
 		//资源检测
 		if(empty($this->img)){
-			throw new \Exception(_('No image can be written to a text resources'));
+			throw new \Exception(___('No image can be written to a text resources'));
 		}
 		if(!is_file($font)){
-			throw new \Exception(_("Font file does not exist:").$font);
+			throw new \Exception(___("Font file does not exist:").$font);
 		}
 
 		//获取颜色和透明度
@@ -529,7 +529,7 @@ class Imagick implements ImageInterface{
 			}
 			$color = '#' . implode('', $color);
 		} elseif(!is_string($color) || 0 !== strpos($color, '#')){
-			throw new \Exception(_('Wrong color values'));
+			throw new \Exception(___('Wrong color values'));
 		}
 		$col = substr($color, 0, 7);
 		$alp = strlen($color) == 9 ? substr($color, -2) : 0;
@@ -610,7 +610,7 @@ class Imagick implements ImageInterface{
 					$x += $posx;
 					$y += $posy;
 				} else{
-					throw new \Exception(_('Position of the character type is not supported'));
+					throw new \Exception(___('Position of the character type is not supported'));
 				}
 		}
 

@@ -38,6 +38,11 @@ class medoo implements CLib\SqlInterface{
 
 	protected $queryString;
 
+	/**
+	 * @var PDO
+	 */
+	protected $pdo;
+
 	public function __construct($options){
 		$this->count_number = 0;
 		try{
@@ -84,7 +89,7 @@ class medoo implements CLib\SqlInterface{
 					$this->password = NULL;
 					break;
 				default:
-					throw new Exception(_("Type:") . $type . _("not defined"));
+					throw new Exception(___("Type:") . $type . ___("not defined"));
 			}
 			$this->pdo = new PDO($dsn, $this->username, $this->password, $this->option);
 			foreach($commands as $value){
@@ -115,6 +120,26 @@ class medoo implements CLib\SqlInterface{
 		$this->record_sql($query, $start, $end);
 		return $rt;
 	}
+
+	/**
+	 * 通过查询SQL得到数组
+	 * @param string $query 待绑定的SQL
+	 * @param array  $param 绑定的参数
+	 * @return array
+	 */
+	public function query_by_param($query, $param){
+		$this->queryString = $query;
+		$this->count_number++;
+		$start = microtime(true);
+		$stmt = $this->pdo->prepare($query);
+		$end = microtime(true);
+		$this->record_sql($query, $start, $end);
+		if(!$stmt->execute($param)){
+			trigger_error("SQL Query Error:{$query}," . $stmt->errorInfo()[2]);
+		}
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 
 	public function exec($query){
 		$this->queryString = $query;
@@ -333,10 +358,7 @@ class medoo implements CLib\SqlInterface{
 			$table_join = array();
 
 			$join_array = array(
-				'>' => 'LEFT',
-				'<' => 'RIGHT',
-				'<>' => 'FULL',
-				'><' => 'INNER'
+				'>' => 'LEFT', '<' => 'RIGHT', '<>' => 'FULL', '><' => 'INNER'
 			);
 
 			foreach($join as $sub_table => $relation){
@@ -546,10 +568,8 @@ class medoo implements CLib\SqlInterface{
 
 	public function info(){
 		return array(
-			'server' => $this->pdo->getAttribute(PDO::ATTR_SERVER_INFO),
-			'client' => $this->pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),
-			'driver' => $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME),
-			'version' => $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
+			'server' => $this->pdo->getAttribute(PDO::ATTR_SERVER_INFO), 'client' => $this->pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),
+			'driver' => $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME), 'version' => $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
 			'connection' => $this->pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS)
 		);
 	}

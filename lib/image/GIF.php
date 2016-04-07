@@ -43,7 +43,7 @@ class GIF{
 				$this->frames = $de->GIFGetFrames();
 				$this->delays = $de->GIFGetDelays();
 			} catch(\Exception $e){
-				throw new \Exception(_("GIF image decoding error"));
+				throw new \Exception(___("GIF image decoding error"));
 			}
 		}
 	}

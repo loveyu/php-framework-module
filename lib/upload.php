@@ -200,7 +200,7 @@ class Upload{
 			))){
 				$imginfo = getimagesize($file['tmp_name']);
 				if(empty($imginfo) || ($ext == 'gif' && empty($imginfo['bits']))){
-					$this->error = _('Illegal image file!');
+					$this->error = ___('Illegal image file!');
 					continue;
 				}
 				if($this->image_info){
@@ -241,7 +241,7 @@ class Upload{
 		} else{
 			$savename = $this->getName($rule, $file['name'], $file);
 			if(empty($savename)){
-				$this->error = _('File naming mistake!');
+				$this->error = ___('File naming mistake!');
 				return false;
 			}
 		}
@@ -316,31 +316,31 @@ class Upload{
 
 		/* 无效上传 */
 		if(empty($file['name'])){
-			$this->error = _('Unknown upload error!');
+			$this->error = ___('Unknown upload error!');
 		}
 
 		/* 检查是否合法上传 */
 		if(!is_uploaded_file($file['tmp_name'])){
-			$this->error = _('Illegal upload files!');
+			$this->error = ___('Illegal upload files!');
 			return false;
 		}
 
 		/* 检查文件大小 */
 		if(!$this->checkSize($file['size'])){
-			$this->error = _('Upload file size does not match!');
+			$this->error = ___('Upload file size does not match!');
 			return false;
 		}
 
 		/* 检查文件Mime类型 */
 		//FLASH上传的文件获取到的mime类型都为application/octet-stream
 		if(!$this->checkMime($file['type'])){
-			$this->error = _('Upload file MIME type does not allow!');
+			$this->error = ___('Upload file MIME type does not allow!');
 			return false;
 		}
 
 		/* 检查文件后缀 */
 		if(!$this->checkExt($file['ext'])){
-			$this->error = _('Upload file extension is not allowed');
+			$this->error = ___('Upload file extension is not allowed');
 			return false;
 		}
 
@@ -444,15 +444,15 @@ class Upload{
 				//获取驱动错误
 				return $this->uploader->getError();
 			case -1:
-				return _("Lib load error.");
+				return ___("Lib load error.");
 			case -2:
-				return _("Files is empty");
+				return ___("Files is empty");
 			case -3:
-				return _("Root path check error.");
+				return ___("Root path check error.");
 			case -4:
-				return _("Save path check error.");
+				return ___("Save path check error.");
 		}
-		return _("Unknown");
+		return ___("Unknown");
 	}
 
 	/**

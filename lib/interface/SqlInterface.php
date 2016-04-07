@@ -30,6 +30,14 @@ interface SqlInterface{
 	public function where_clause($where);
 
 	/**
+	 * 通过查询SQL得到数组
+	 * @param string $query 待绑定的SQL
+	 * @param array  $param 绑定的参数
+	 * @return array
+	 */
+	public function query_by_param($query, $param);
+
+	/**
 	 * @param      $table
 	 * @param      $join
 	 * @param null $columns
