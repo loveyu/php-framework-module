@@ -65,4 +65,51 @@ class pager{
 		return [($this->current_page - 1) * $this->one_page, $this->one_page];
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getCount(){
+		return $this->count;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getOnePage(){
+		return $this->one_page;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getNowPage(){
+		return $this->now_page;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAllPage(){
+		return $this->all_page;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getCurrentPage(){
+		return $this->current_page;
+	}
+
+
+	/**
+	 * 获取上一页和下一页
+	 * @return array {'previous' => NULL,'next' => NULL}
+	 */
+	public function get_pager(){
+		return [
+			'previous' => NULL,
+			'next' => NULL
+		];
+	}
+
 }
