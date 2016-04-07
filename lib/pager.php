@@ -46,14 +46,14 @@ class pager{
 		if($one_page <= 0){
 			$one_page = 10;
 		}
-		if($one_page <= 0){
-			$one_page = 1;
+		if($now_page <= 0){
+			$now_page = 1;
 		}
 		$this->count = $count;
 		$this->one_page = $one_page;
 		$this->now_page = $now_page;
 		$this->all_page = ceil($count / (double)$one_page);
-		$this->current_page = $one_page > $this->all_page ? $this->all_page : $one_page;
+		$this->current_page = $now_page > $this->all_page ? $this->all_page : $now_page;
 	}
 
 
