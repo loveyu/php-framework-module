@@ -50,7 +50,10 @@ class Cookie{
 	 * @param $key string
 	 */
 	public function setKey($key){
-		$this->key = _hash($key . @$_SERVER['HTTP_USER_AGENT'] . COOKIE_KEY, true);
+		if(!array_key_exists('HTTP_USER_AGENT', $_SERVER)){
+			$_SERVER['HTTP_USER_AGENT'] = "";
+		}
+		$this->key = _hash($key . $_SERVER['HTTP_USER_AGENT'] . COOKIE_KEY, true);
 	}
 
 	/**
