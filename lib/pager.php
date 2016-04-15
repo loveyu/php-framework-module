@@ -54,6 +54,9 @@ class pager{
 		$this->now_page = $now_page;
 		$this->all_page = ceil($count / (double)$one_page);
 		$this->current_page = $now_page > $this->all_page ? $this->all_page : $now_page;
+		if($this->current_page < 1){
+			$this->current_page = 1;
+		}
 	}
 
 

@@ -105,9 +105,13 @@ class medoo implements CLib\SqlInterface{
 	}
 
 	private function record_sql($sql, $start_time, $end_time){
-		if(_Debug_ && isset($_GET['_debug']) && $_GET['_debug'] === "1"){
+		if(_Debug_){
 			$sql = "[" . round($end_time - $start_time, 5) . "]:{$sql}";
-			\Core\Log::write($sql, \Core\Log::DEBUG);
+			if(isset($_GET['_debug']) && $_GET['_debug'] === "1"){
+				\Core\Log::write($sql, \Core\Log::DEBUG);
+			} elseif(isset($_GET['_debug']) && $_GET['_debug'] == "echo_sql"){
+				echo "{$sql}\t<br>\n";
+			}
 		}
 	}
 
@@ -132,12 +136,13 @@ class medoo implements CLib\SqlInterface{
 		$this->count_number++;
 		$start = microtime(true);
 		$stmt = $this->pdo->prepare($query);
-		$end = microtime(true);
-		$this->record_sql($query, $start, $end);
 		if(!$stmt->execute($param)){
 			trigger_error("SQL Query Error:{$query}," . $stmt->errorInfo()[2]);
 		}
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$rt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$end = microtime(true);
+		$this->record_sql($query, $start, $end);
+		return $rt;
 	}
 
 
@@ -358,7 +363,10 @@ class medoo implements CLib\SqlInterface{
 			$table_join = array();
 
 			$join_array = array(
-				'>' => 'LEFT', '<' => 'RIGHT', '<>' => 'FULL', '><' => 'INNER'
+				'>' => 'LEFT',
+				'<' => 'RIGHT',
+				'<>' => 'FULL',
+				'><' => 'INNER'
 			);
 
 			foreach($join as $sub_table => $relation){
@@ -568,8 +576,10 @@ class medoo implements CLib\SqlInterface{
 
 	public function info(){
 		return array(
-			'server' => $this->pdo->getAttribute(PDO::ATTR_SERVER_INFO), 'client' => $this->pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),
-			'driver' => $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME), 'version' => $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
+			'server' => $this->pdo->getAttribute(PDO::ATTR_SERVER_INFO),
+			'client' => $this->pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),
+			'driver' => $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME),
+			'version' => $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
 			'connection' => $this->pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS)
 		);
 	}
