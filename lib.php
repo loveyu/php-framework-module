@@ -49,7 +49,7 @@ class Lib{
 		foreach($list as $name){
 			if(!in_array($name, $this->file_list)){
 				if(is_file($this->lib_path . "/" . $name . '.php')){
-					require($this->lib_path . "/" . $name . '.php');
+					require_once($this->lib_path . "/" . $name . '.php');
 					$this->file_list[] = $name;
 				} else{
 					Log::write(___("Can't reload lib:") . $this->lib_path . "/" . $name . '.php', Log::ERR);

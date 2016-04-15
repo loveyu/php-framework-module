@@ -126,3 +126,18 @@ define('NOW_TIME', time());
 set_error_handler('\Core\Log::phpErrorLog');
 register_shutdown_function('\Core\Log::phpShowdownLog');
 //}
+
+//自动加载系统类
+spl_autoload_register(function ($class){
+	$list = explode("\\", $class);
+	if(isset($list[0]) && $list[0] == "Core" && count($list) > 1){
+		$class_name = array_pop($list);
+		array_shift($list);
+		$path = __DIR__ . "/lib/" . implode("/", $list) . "/{$class_name}.php";
+		if(is_file($path)){
+			include_once $path;
+			return true;
+		}
+	}
+	return false;
+});

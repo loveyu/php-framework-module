@@ -1,5 +1,8 @@
 <?php
 namespace Core;
+
+use Core\Exception\PageException404;
+
 if(!defined('_CorePath_')){
 	exit;
 }
@@ -140,6 +143,8 @@ class Uri{
 				//当再次加载404页面跳过
 				$this->load_404();
 			}
+		} catch(PageException404 $ex){
+			$this->load_404();
 		} catch(\Exception $ex){
 			Log::write(___("URI core class find a exception.") . print_r($ex, true), Log::ERR);
 			if(_Debug_){
