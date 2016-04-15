@@ -41,7 +41,7 @@ class medoo implements CLib\SqlInterface{
 	/**
 	 * @var PDO
 	 */
-	protected $pdo;
+	public $pdo;
 
 	public function __construct($options){
 		$this->count_number = 0;
