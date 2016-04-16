@@ -25,7 +25,7 @@ function u(){
 
 /**
  * 获取钩子
- * @return Core\Hook
+ * @return \Core\Hook
  */
 function hook(){
 	return Core\Core::getInstance()->getHook();
@@ -33,7 +33,7 @@ function hook(){
 
 /**
  * 获取LIB
- * @return Core\Lib
+ * @return \Core\Lib
  */
 function lib(){
 	return Core\Core::getInstance()->getLib();
@@ -41,7 +41,7 @@ function lib(){
 
 /**
  * 获取系统LIB
- * @return Core\Lib
+ * @return \Core\Lib
  */
 function c_lib(){
 	return Core\Core::getInstance()->getCoreLib();
@@ -49,7 +49,7 @@ function c_lib(){
 
 /**
  * 获取系统配置
- * @return Core\Config
+ * @return \Core\Config
  */
 function cfg(){
 	return Core\Core::getInstance()->getConfig();
@@ -81,7 +81,7 @@ function c_h($helper_file){
 
 /**
  * 获取请求类
- * @return Core\Request
+ * @return \Core\Request
  */
 function req(){
 	return \Core\Core::getInstance()->getRequest();
