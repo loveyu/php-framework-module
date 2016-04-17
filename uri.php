@@ -99,7 +99,7 @@ class Uri{
 	public function load(){
 		$list = func_get_args();
 		if(!$this->_flag_404){
-			if(hook()->apply("Uri_load_start", false, $list) === true){
+			if(\hook()->apply("Uri_load_start", false, $list) === true){
 				//如果加载请求被处理则不再继续调用，直接返回
 				return true;
 			}
@@ -168,19 +168,19 @@ class Uri{
 		if($class_name::__class_name() !== $class_name){
 			return false;
 		}
-		hook()->apply('Uri_load_begin', NULL);
+		\hook()->apply('Uri_load_begin', NULL);
 		$page = new $class_name;
 		/**
 		 * @var $page Page
 		 */
 		if(get_class($page) !== $class_name){
-			hook()->apply('Uri_load_end', NULL);
+			\hook()->apply('Uri_load_end', NULL);
 			return false;
 		}
 		if($page->__is_exit()){
 			//程序已结束，不再继续调用方法
 			$this->_page_exit = true;
-			hook()->apply('Uri_load_end', NULL);
+			\hook()->apply('Uri_load_end', NULL);
 			return false;
 		}
 		if(_Debug_){
@@ -195,7 +195,7 @@ class Uri{
 			), $param);
 		}
 
-		hook()->apply('Uri_load_end', NULL);
+		\hook()->apply('Uri_load_end', NULL);
 		return true;
 	}
 
@@ -203,11 +203,11 @@ class Uri{
 	 * 加载404页面
 	 */
 	public function load_404(){
-		cfg()->set(array(
+		\cfg()->set(array(
 			'system',
 			'is_404'
 		), true);
-		hook()->apply('Uri_load_404', NULL);
+		\hook()->apply('Uri_load_404', NULL);
 		$this->_flag_404 = true;
 		if(empty($this->_list_404) || call_user_func_array(array(
 				$this,
@@ -418,7 +418,7 @@ class UriInfo{
 	 * 对路由信息进行二次处理
 	 */
 	public function process(){
-		$this->url_list = hook()->apply('UriInfo_process', $this->url_list);
+		$this->url_list = \hook()->apply('UriInfo_process', $this->url_list);
 	}
 }
 

@@ -110,7 +110,7 @@ class medoo implements CLib\SqlInterface{
 			if(isset($_GET['_debug']) && $_GET['_debug'] === "1"){
 				\Core\Log::write($sql, \Core\Log::DEBUG);
 			} elseif(isset($_GET['_debug']) && $_GET['_debug'] == "echo_sql"){
-				echo "{$sql}\t<br>\n";
+				echo "{$sql}<br>\n";
 			}
 		}
 	}
@@ -122,6 +122,12 @@ class medoo implements CLib\SqlInterface{
 		$rt = $this->pdo->query($query);
 		$end = microtime(true);
 		$this->record_sql($query, $start, $end);
+		if($rt === false){
+			$error = $this->error();
+			if(!empty($error) && $error[1] !== "0000"){
+				throw new \Core\Exception\SqlException($this, implode(",", $error));
+			}
+		}
 		return $rt;
 	}
 
