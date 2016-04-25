@@ -6,7 +6,7 @@ namespace CLib\Upload;
 
 use CLib\UploadInterface;
 
-c_lib()->load('upload');
+\c_lib()->load('upload');
 
 class Qiniu implements UploadInterface{
 	/**
@@ -32,6 +32,11 @@ class Qiniu implements UploadInterface{
 		'timeout' => 300,
 		//超时时间
 	);
+
+	/**
+	 * @var QiniuStorage
+	 */
+	public $qiniu;
 
 	public function checkPath($path){
 		return true;
