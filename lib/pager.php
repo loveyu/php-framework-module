@@ -36,6 +36,11 @@ class pager{
 	private $current_page;
 
 	/**
+	 * @var callable 连接创建器
+	 */
+	private $link_creator = NULL;
+
+	/**
 	 * 分页类
 	 * pager constructor.
 	 * @param int $count    总数
@@ -109,10 +114,28 @@ class pager{
 	 * @return array {'previous' => NULL,'next' => NULL}
 	 */
 	public function get_pager(){
+		$previous = NULL;
+		$next = NULL;
+		if($this->now_page > 1){
+			$previous = call_user_func_array($this->link_creator, [$this->now_page - 1]);
+		}
+		if($this->now_page < $this->all_page){
+			$next = call_user_func_array($this->link_creator, [$this->now_page + 1]);
+		}
 		return [
-			'previous' => NULL,
-			'next' => NULL
+			'previous' => $previous,
+			'next' => $next
 		];
 	}
 
+	/**
+	 * 设置连接创建器
+	 * @param callable $callback
+	 */
+	public function setLinkCreator($callback){
+		if(!is_callable($callback)){
+			return;
+		}
+		$this->link_creator = $callback;
+	}
 }
