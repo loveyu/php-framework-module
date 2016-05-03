@@ -108,15 +108,15 @@ function debug($str, $out = false){
 }
 
 
-require(_CorePath_ . "/core.php");
-require(_CorePath_ . "/timer.php");
-require(_CorePath_ . "/hook.php");
-require(_CorePath_ . "/config.php");
-require(_CorePath_ . "/log.php");
-require(_CorePath_ . "/uri.php");
-require(_CorePath_ . "/lib.php");
-require(_CorePath_ . "/page.php");
-require(_CorePath_ . "/request.php");
+require_once(_CorePath_ . "/core.php");
+require_once(_CorePath_ . "/timer.php");
+require_once(_CorePath_ . "/hook.php");
+require_once(_CorePath_ . "/config.php");
+require_once(_CorePath_ . "/log.php");
+require_once(_CorePath_ . "/uri.php");
+require_once(_CorePath_ . "/lib.php");
+require_once(_CorePath_ . "/page.php");
+require_once(_CorePath_ . "/request.php");
 
 define('URL_NOW', ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https' : 'http') . "://" . @$_SERVER["HTTP_HOST"] . @$_SERVER['REQUEST_URI']);
 define('URL_PATH', str_replace("\\", "/", dirname($_SERVER['SCRIPT_NAME'])) . "");
@@ -133,7 +133,7 @@ spl_autoload_register(function ($class){
 	if(isset($list[0]) && $list[0] == "Core" && count($list) > 1){
 		$class_name = array_pop($list);
 		array_shift($list);
-		$path = __DIR__ . "/lib/" . implode("/", $list) . "/{$class_name}.php";
+		$path = __DIR__ . "/lib/" . strtolower(implode("/", $list)) . "/{$class_name}.php";
 		if(is_file($path)){
 			include_once $path;
 			return true;
