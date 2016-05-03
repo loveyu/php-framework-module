@@ -117,6 +117,13 @@ function send_http_status($code){
 }
 
 /**
+ * 发送一个JSON数据的头
+ */
+function send_json_header(){
+	header("Content-Type: application/json; charset=utf-8");
+}
+
+/**
  * 设置语言文件
  * @param string $lang
  * @param string $domain
