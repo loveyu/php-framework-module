@@ -130,13 +130,17 @@ register_shutdown_function('\Core\Log::phpShowdownLog');
 //自动加载系统类
 spl_autoload_register(function ($class){
 	$list = explode("\\", $class);
-	if(isset($list[0]) && $list[0] == "Core" && count($list) > 1){
-		$class_name = array_pop($list);
-		array_shift($list);
-		$path = __DIR__ . "/lib/" . strtolower(implode("/", $list)) . "/{$class_name}.php";
-		if(is_file($path)){
-			include_once $path;
-			return true;
+	if(isset($list[0])){
+		if(in_array($list[0], ["Core", "CLib"]) && count($list) > 1){
+			$class_name = array_pop($list);
+			array_shift($list);
+			$path = __DIR__ . "/lib/" . strtolower(implode("/", $list)) . "/{$class_name}.php";
+			foreach([$path, strtolower($path)] as $path){
+				if(is_file($path)){
+					include_once $path;
+					return true;
+				}
+			}
 		}
 	}
 	return false;
