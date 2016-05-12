@@ -280,7 +280,7 @@ class Upload{
 		$name = '';
 		if(is_array($rule)){ //数组规则
 			$func = $rule[0];
-			$param = (array)$rule[1];
+			$param = isset($rule[1]) ? (array)$rule[1] : array();
 			foreach($param as &$value){
 				if($value == "__FILE_INFO__"){
 					$value = $file_info;
