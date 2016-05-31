@@ -78,7 +78,8 @@ class medoo implements CLib\SqlInterface{
 					$commands[] = $set_charset;
 					break;
 				case 'mssql':
-					$dsn = strpos(PHP_OS, 'WIN') !== false ? 'sqlsrv:server=' . $this->server . (isset($port) ? ',' . $port : '') . ';database=' . $this->database_name : 'dblib:host=' . $this->server . (isset($port) ? ':' . $port : '') . ';dbname=' . $this->database_name;
+					$dsn = strpos(PHP_OS,
+								  'WIN') !== false ? 'sqlsrv:server=' . $this->server . (isset($port) ? ',' . $port : '') . ';database=' . $this->database_name : 'dblib:host=' . $this->server . (isset($port) ? ':' . $port : '') . ';dbname=' . $this->database_name;
 					// Keep MSSQL QUOTED_IDENTIFIER is ON for standard quoting
 					$commands[] = 'SET QUOTED_IDENTIFIER ON';
 					$commands[] = $set_charset;
@@ -125,7 +126,9 @@ class medoo implements CLib\SqlInterface{
 		if($rt === false){
 			$error = $this->error();
 			if(!empty($error) && $error[1] !== "0000"){
-				throw new \Core\Exception\SqlException($this, implode(",", $error));
+				$error_str = implode(",", $error);
+				\Core\Log::write("SQL error:{$error_str}\n{$query}", \Core\Log::SQL);
+				throw new \Core\Exception\SqlException($this, $error_str);
 			}
 		}
 		return $rt;
@@ -206,7 +209,10 @@ class medoo implements CLib\SqlInterface{
 
 		foreach($data as $key => $value){
 			if(($key == 'AND' || $key == 'OR') && is_array($value)){
-				$wheres[] = 0 !== count(array_diff_key($value, array_keys(array_keys($value)))) ? '(' . $this->data_implode($value, ' ' . $key) . ')' : '(' . $this->inner_conjunct($value, ' ' . $key, $conjunctor) . ')';
+				$wheres[] = 0 !== count(array_diff_key($value, array_keys(array_keys($value)))) ? '(' . $this->data_implode($value,
+																															' ' . $key) . ')' : '(' . $this->inner_conjunct($value,
+																																											' ' . $key,
+																																											$conjunctor) . ')';
 			} else if($key === 'LIKE' && is_array($value)){
 				$wheres[] = substr($this->where_clause(['LIKE' => $value]), 7);
 			} else{
@@ -330,7 +336,9 @@ class medoo implements CLib\SqlInterface{
 			if(isset($where['MATCH'])){
 				$match_query = $where['MATCH'];
 				if(is_array($match_query) && isset($match_query['columns']) && isset($match_query['keyword'])){
-					$where_clause .= ($where_clause != '' ? ' AND ' : ' WHERE ') . ' MATCH (`' . str_replace('.', '`.`', implode($match_query['columns'], '`, `')) . '`) AGAINST (' . $this->quote($match_query['keyword']) . ')';
+					$where_clause .= ($where_clause != '' ? ' AND ' : ' WHERE ') . ' MATCH (`' . str_replace('.', '`.`',
+																											 implode($match_query['columns'],
+																													 '`, `')) . '`) AGAINST (' . $this->quote($match_query['keyword']) . ')';
 				}
 			}
 			if(isset($where['GROUP'])){
