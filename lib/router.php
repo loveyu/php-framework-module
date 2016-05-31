@@ -61,6 +61,10 @@ class Router{
 	 * @return array 返回的信息
 	 */
 	public function result($uri_list){
+		$c_route = $this->cli_route();
+		if($c_route !== false){
+			return $c_route;
+		}
 		$str = urldecode(implode(ROUTER_SPLIT_CHAR, $uri_list));
 		if(isset($this->_redirect[$str])){
 			return $this->to_list($this->_redirect[$str]);
@@ -79,6 +83,21 @@ class Router{
 			}
 		}
 		return $uri_list;
+	}
+
+	/**
+	 * 检查是否有命令行传来的路由
+	 * @return array|false 没有时返回false
+	 */
+	private function cli_route(){
+		global $argv;
+		if(!IS_CLI_RUN_MODE){
+			return false;
+		}
+		if(count($argv) != 3 || $argv[1] !== "route"){
+			return false;
+		}
+		return explode(ROUTER_SPLIT_CHAR, $argv[2]);
 	}
 
 	/**
