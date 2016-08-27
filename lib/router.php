@@ -91,7 +91,7 @@ class Router{
 	 */
 	private function cli_route(){
 		global $argv;
-		if(!IS_CLI_RUN_MODE){
+		if(!defined('IS_CLI_RUN_MODE') || !IS_CLI_RUN_MODE){
 			return false;
 		}
 		if(count($argv) != 3 || $argv[1] !== "route"){
