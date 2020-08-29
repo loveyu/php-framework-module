@@ -327,7 +327,7 @@ class UriInfo{
 	 * 获取请求的路径信息，并进行相应处理
 	 */
 	private function make_req(){
-		if(!isset($_SERVER['PATH_INFO'])){
+		if(!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] === ''){
 			$i = strpos($_SERVER['REQUEST_URI'], '?');
 			if($i === false){
 				$this->path = $_SERVER['REQUEST_URI'];

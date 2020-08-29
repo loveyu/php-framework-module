@@ -11,8 +11,8 @@ class Mcrypt implements SafeInterface{
 	 * @return string
 	 */
 	public function encrypt($encrypt, $key = ''){
-		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
-		$pass_crypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $encrypt, MCRYPT_MODE_ECB, $iv);
+		$iv = @mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
+		$pass_crypt = @mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $encrypt, MCRYPT_MODE_ECB, $iv);
 		$encode = base64_encode($pass_crypt);
 		return $encode;
 	}
@@ -25,8 +25,8 @@ class Mcrypt implements SafeInterface{
 	 */
 	public function decrypt($decrypt, $key = ''){
 		$decoded = base64_decode($decrypt);
-		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
-		$decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), $decoded, MCRYPT_MODE_ECB, $iv);
+		$iv = @mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
+		$decrypted = @mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), $decoded, MCRYPT_MODE_ECB, $iv);
 		return $decrypted;
 	}
 
