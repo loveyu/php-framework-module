@@ -191,7 +191,7 @@ class medoo implements CLib\SqlInterface{
 			$temp[] = is_int($value) ? $value : $this->pdo->quote($value);
 		}
 
-		return implode($temp, ',');
+		return implode(',', $temp);
 	}
 
 	protected function inner_conjunct($data, $conjunctor, $outer_conjunctor){
